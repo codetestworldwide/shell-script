@@ -2,7 +2,7 @@
 
 USERID=$(id -u)
 
-if [ $USERID -ne 0]
+if [ $USERID -ne 0 ]
 then 
    echo "ERROR:: you must have sudo acess to execute this script"
    exit 1 #other than 0
@@ -10,7 +10,7 @@ fi
 
  dnf list installed mysql
 
- if [ $? -ne 0] 
+ if [ $? -ne 0 ] 
   then # not installed
  dnf install mysql -y
 if [ $? -ne 0 ]
@@ -25,7 +25,7 @@ else
 else
     echo "MYSQL is already ... INSTALLED"
 fi
-# if [$? -ne 0]
+# if [ $? -ne 0 ]
 #then 
 #echo "Installiing Git ... FAILURE"
     #exit 1
@@ -34,7 +34,7 @@ fi
    # fi
 dnf install git
    
-   if [$? -ne 0]
+   if [ $? -ne 0 ]
    then
    dnf install got -y
 if [$? -ne 0]
@@ -49,7 +49,7 @@ else
   fi
 
 
-#if [$? -ne 0]
+#if [ $? -ne 0 ]
 #then
 # echo "INSTALLING Git ... FAILURE"
 #exit
