@@ -10,7 +10,7 @@ SOURCE_DIR=$1
 dect_DIR=$2
 DAYS=${3:-14} # if user is not prividing number of days, we are taking 14 as default
 
-LOGS_FILDER="var/log/shellscript-logs"
+LOGS_FILDER="/home/ec2-user/shellscript-logs"
 LOG_FILE=$(echo $0 | cut -d "." -f1)
 TIMESTAMP=$(date +%Y-%m-%H-%M-%S)
 LOG_FILE_NAME="$LOGS_FOLDER/$LOG_FILE-$TIMESTAMP.log"
@@ -24,9 +24,10 @@ VALIDATE(){
        echo "$2 ... $G SUCCESS $N"
   fi
 }    
-USAGE(){
 
+USAGE(){
 echo -e "$R USAGE:: $N sh 18-bacup.sh <SOURCE_DIR> <DEST_DIR> <DAYS(optional)>"
+exit 1
 }
 
 mkdir -p /home/ec2-user/shell-script-log/
