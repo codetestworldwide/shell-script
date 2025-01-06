@@ -37,5 +37,17 @@ then
     USAGE
 fi
  
+ if [ ! -d $SOURCE_DIR ]
+then
+   echco -e "$SOURCE_DIR does not exit ...  please check"
+   exit1
+fi
+
+if [ ! -d $SOURCE_DIR ]
+then
+
+echco -e "$SOURCE_DIR does not exit ...  please check"
+   exit1
+fi
     echo "Script started executing at:$TIMEStAMP" &>>LOG_FILE_NAME
     
