@@ -51,6 +51,6 @@ echco -e "$SOURCE_DIR does not exit ...  please check"
 fi
     echo "Script started executing at:$TIMEStAMP" &>>LOG_FILE_NAME
 
- FILES=$(find $source_DIR -name "*.log" +mtime $DAYS)
+ FILES=$(find $source_DIR -name "*.log" +mtime +$DAYS)
 
  echo "Files are: $FIlLES"  
