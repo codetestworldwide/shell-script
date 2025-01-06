@@ -1,36 +1,27 @@
 #!/bin/bash
 
-USERID=$(id -u)
+
 R="\e[31m"
 G="\e[32m"
 Y="\e[33m"
 N="\e[0m"
 
 SOURCE_DIR=$1
-dect_DIR=$2
+DEST_DIR=$2
 DAYS=${3:-14} # if user is not prividing number of days, we are taking 14 as default
 
 LOGS_FILDER="/home/ec2-user/shellscript-logs"
-LOG_FILE=$(echo $0 | cut -d "." -f1)
+LOG_FILE=$(echo $0 | awk -F "/" 'printf $NF}' | cut -d "." -f1 )
 TIMESTAMP=$(date +%Y-%m-%d-%H-%M-%S)
 LOG_FILE_NAME="$LOGS_FOLDER/$LOG_FILE-$TIMESTAMP.log"
 
-VALIDATE(){
-    if [ $1 -ne 0 ]
-    then 
-       echo "$2 ... $R FAILURE $N"
-       exit 1
-  else
-       echo "$2 ... $G SUCCESS $N"
-  fi
-}    
-
 USAGE(){
-echo -e "$R USAGE:: $N sh 18-bacup.sh <SOURCE_DIR> <DEST_DIR> <DAYS(optional)>"
+echo -e "$R USAGE:: $N sh 18-backup.sh <SOURCE_DIR> <DEST_DIR> <DAYS(optional)>"
 exit 1
 }
 
-mkdir -p /home/ec2-user/shell-script-log/
+mkdir -p /home/ec2-user/shell-script-logs
+echo "Filename: $0"
 
 if [ $# -lt 2 ]
 then
@@ -39,18 +30,41 @@ fi
  
  if [ ! -d $SOURCE_DIR ]
 then
-   echco -e "$SOURCE_DIR does not exit ...  please check"
+   echco -e "$SOURCE_DIR does not exit...please check"
    exit1
 fi
 
-if [ ! -d $SOURCE_DIR ]
+if [ ! -d $DEST_DIR ]
 then
-
-echco -e "$SOURCE_DIR does not exit ...  please check"
+echco -e "$DEST_DIR does not exit ...  please check"
    exit1
 fi
+    
     echo "Script started executing at:$TIMEStAMP" &>>LOG_FILE_NAME
 
- FILES=$(find $source_DIR -name "*.log" -mtime +$DAYS)
+ FILES=$(find $SOURCE_DIR -name "*.log" -mtime +$DAYS)
 
- echo "Files are: $FIlLES"  
+ if [-n "$FILES" ] # true if there are files to zip
+ then  
+    echo "Files are: $FILES"
+    ZIP_FILE="$DEST_DIR/app-logs-$TIMESTAMP.zip"
+    find $SOURCE_DIR -name  "*.log" -mtime +$DAYS | zip -@ "$ZIP_FILE"
+    if [ -f "$ZIP_FILE" ]
+    then
+       echo -e "successfully created zip file for files older than $DAYS"
+       while read -r filepath # here filepath is the variable name,you can give any name
+       do 
+         echo "Deleting file: $filepath" &>>$LOG_FILE_NAME
+         rm -rf $filepath
+         echo "deleted file: $filepath"
+       done <<< $FILES
+    else
+        echo -e "$R Error:: $N Failed to created ZIP file "
+        exit 1
+    fi
+
+   else
+     echo "No files found older than $DAYS"
+   fi
+               
+    
