@@ -36,15 +36,15 @@ fi
 
 if [ ! -d $DEST_DIR ]
 then
-echco -e "$DEST_DIR does not exit ...  please check"
-   exit1
+echo -e "$DEST_DIR does not exit...please check"
+   exit 1
 fi
     
     echo "Script started executing at:$TIMEStAMP" &>>LOG_FILE_NAME
 
  FILES=$(find $SOURCE_DIR -name "*.log" -mtime +$DAYS)
 
- if [-n "$FILES" ] # true if there are files to zip
+ if [ -n "$FILES" ] # true if there are files to zip
  then  
     echo "Files are: $FILES"
     ZIP_FILE="$DEST_DIR/app-logs-$TIMESTAMP.zip"
