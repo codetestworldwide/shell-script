@@ -12,7 +12,7 @@ DAYS=${3:-14} # if user is not prividing number of days, we are taking 14 as def
 
 LOGS_FILDER="/home/ec2-user/shellscript-logs"
 LOG_FILE=$(echo $0 | cut -d "." -f1)
-TIMESTAMP=$(date +%Y-%m-%H-%M-%S)
+TIMESTAMP=$(date +%Y-%m-%d-%H-%M-%S)
 LOG_FILE_NAME="$LOGS_FOLDER/$LOG_FILE-$TIMESTAMP.log"
 
 VALIDATE(){
@@ -51,6 +51,6 @@ echco -e "$SOURCE_DIR does not exit ...  please check"
 fi
     echo "Script started executing at:$TIMEStAMP" &>>LOG_FILE_NAME
 
- FILES=$(find $source_DIR -name "*.log" +mtime +$DAYS)
+ FILES=$(find $source_DIR -name "*.log" -mtime +$DAYS)
 
  echo "Files are: $FIlLES"  
